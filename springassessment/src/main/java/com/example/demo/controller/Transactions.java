@@ -7,10 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.controller.request.body.TransactionRequestBody;
 import com.example.demo.model.Transaction;
 import com.example.demo.service.TransactionsImpl;
+
+import jakarta.annotation.PostConstruct;
 
 @Controller
 @RequestMapping("/api")
@@ -18,6 +23,16 @@ public class Transactions {
 
 	@Autowired
 	public TransactionsImpl transactions;
+	
+	@PostMapping("/calcRewards")
+	public ResponseEntity<String> calculateAndInsertRewards(@RequestBody TransactionRequestBody req) {
+		try {
+			transactions.insertRewards(req);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		return new ResponseEntity<>("OK", HttpStatus.OK);
+	}
 	
 	@GetMapping("/transactions")
 	public ResponseEntity<List<Transaction>> getAllTransactions(){
