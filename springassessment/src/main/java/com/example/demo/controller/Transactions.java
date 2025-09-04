@@ -27,7 +27,8 @@ public class Transactions {
 		try {
 			transactions.insertRewards(req);
 		}catch(Exception e) {
-			System.out.println(e);
+			System.out.println("Unable to insert records in the database table");
+			throw e;
 		}
 		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}

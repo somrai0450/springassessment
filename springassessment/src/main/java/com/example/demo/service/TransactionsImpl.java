@@ -31,10 +31,14 @@ public class TransactionsImpl {
 	public void insertRewards(TransactionRequestBody req) {
 		double amount = req.getTransAmount();
 		double totalReward = calculate(amount);
+		try {
+			repo.save(req.getCustomerId(), req.getDate(), req.getTransAmount());
+			rewardRepo.save(req.getCustomerId(), req.getDate(), totalReward);
+		}catch(Exception e) {
+			System.out.println("Unable to insert data in the table.");
+			throw e;
+		}
 		
-		repo.save(req.getCustomerId(), req.getDate(), req.getTransAmount());
-		
-		rewardRepo.save(req.getCustomerId(), req.getDate(), totalReward);
 	}
 
 	private double calculate(double amount) {
