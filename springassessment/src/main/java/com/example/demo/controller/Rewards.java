@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.controller.response.body.RewardRespOnCustId;
+import com.example.demo.controller.response.body.RewardResponseBody;
 import com.example.demo.model.Reward;
 import com.example.demo.service.CalculateRewards;
 
@@ -24,22 +26,18 @@ public class Rewards {
 	public CalculateRewards calReward;
 
 	@GetMapping("/rewards")
-	public ResponseEntity<Integer> getRewards() {
+	public ResponseEntity<List<RewardResponseBody>> getRewards() {
 		
-		int result = 50 * 2;
+		List<RewardResponseBody> resp = calReward.getRewards();
 		
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		return new ResponseEntity<List<RewardResponseBody>>(resp, HttpStatus.OK); 
 	}
 	
 	@GetMapping("rewards/{customerId}")
-	public ResponseEntity<Reward> getRewardsOfCustId(@PathVariable int customerId) {
+	public ResponseEntity<List<Reward>> getRewardsOfCustId(@PathVariable int customerId) {
 		
-		Optional<Reward> response = calReward.getRewardsDetailsOfCustId(customerId);
-		Reward reward = response.get();
-		if(response.isPresent()) {
-			return new ResponseEntity<>(reward, HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>(reward, HttpStatus.NOT_FOUND);
-		}
+		ResponseEntity<List<Reward>> resp = calReward.getRewardsDetailsOfCustId(customerId);
+		
+		return resp;
 	}
 }

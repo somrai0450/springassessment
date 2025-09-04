@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,9 +15,10 @@ public class Reward {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private int customerId;
+	private Long id;
+	
 	private double totalReward;
+	private int customerId;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
@@ -24,7 +26,7 @@ public class Reward {
 		
 	}
 
-	public Reward(int id, int customerId, double totalReward, Date date) {
+	public Reward(Long id, int customerId, double totalReward, Date date) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -40,11 +42,11 @@ public class Reward {
 		this.date = date;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

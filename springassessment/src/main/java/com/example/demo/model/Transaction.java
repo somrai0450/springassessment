@@ -4,6 +4,7 @@ package com.example.demo.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +17,10 @@ public class Transaction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private int customerId;
+	private Long id;
+	
     private double amount;
+    private int customerId;
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     
@@ -26,7 +28,7 @@ public class Transaction {
     	
     }
     
-	public Transaction(int id, int customerId, double amount, Date date) {
+	public Transaction(Long id, int customerId, double amount, Date date) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -34,11 +36,11 @@ public class Transaction {
 		this.date = date;
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

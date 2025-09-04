@@ -2,13 +2,13 @@ package com.example.demo.controller.request.body;
 
 import java.util.Date;
 
-//import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class TransactionRequestBody {
 
 	private int customerId;
 	private double transAmount;
-//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date date;
 	
 	public TransactionRequestBody() {

@@ -13,7 +13,7 @@ import com.example.demo.model.Transaction;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface TransactionRepo extends JpaRepository<Transaction, Integer> {
+public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
 	@Transactional
 	@Modifying
