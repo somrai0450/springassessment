@@ -15,8 +15,6 @@ import com.example.demo.controller.request.body.TransactionRequestBody;
 import com.example.demo.model.Transaction;
 import com.example.demo.service.TransactionsImpl;
 
-import jakarta.annotation.PostConstruct;
-
 @Controller
 @RequestMapping("/api")
 public class Transactions {
