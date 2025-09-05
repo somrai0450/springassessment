@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class CalculateRewards {
 
 	public List<RewardResponseBody> getRewards() {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+		
 		
 		List<Reward> rewardList = rewardDetailsRepo.findAll();
 		
@@ -43,9 +45,9 @@ public class CalculateRewards {
 			Integer customerId = entry.getKey();
 			Map<Integer, Integer> monthlyRewards = new HashMap<>();
             int total = 0;
-            for (Reward tx : entry.getValue()) {
-                double custRewards = tx.getTotalReward();
-                Integer month = tx.getDate().getMonth();
+            for (Reward reward : entry.getValue()) {
+                double custRewards = reward.getTotalReward();
+                Integer month = getMonth(reward.getDate());
 
                 monthlyRewards.put(month, (int) (monthlyRewards.getOrDefault(month, 0) + custRewards));
                 
@@ -56,6 +58,12 @@ public class CalculateRewards {
 		}
 		
 		return rewardResult;
+	}
+
+	private int getMonth(Date date) {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int month = localDate.getMonthValue();
+		return month;
 	}
 			
 }
