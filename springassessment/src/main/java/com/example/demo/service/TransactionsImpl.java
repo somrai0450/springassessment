@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class TransactionsImpl {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	public void insertRewards(TransactionRequestBody req) {
+	public ResponseEntity<String> insertRewards(TransactionRequestBody req) {
 		double amount = req.getTransAmount();
 		double totalReward = calculate(amount);
 		try {
@@ -38,19 +39,27 @@ public class TransactionsImpl {
 			System.out.println("Unable to insert data in the table.");
 			throw e;
 		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
 		
 	}
 
-	private double calculate(double amount) {
+	private double calculate(double amount){
 		double point = 0;
-		if(amount <= 50) {
-			return 0;
-		}else if(amount >= 50 && amount <= 100) {
-			point = point + (amount - 50) * 1;
-		}else if(amount > 100) {
-			point = point + (amount - 100) * 2;
-			point = point + 50;
+		try {
+			if(amount <= 50) {
+				return 0;
+			}else if(amount >= 50 && amount <= 100) {
+				point = point + (amount - 50) * 1;
+			}else if(amount > 100) {
+				point = point + (amount - 100) * 2;
+				point = point + 50;
+			}
+			
+		}catch (ArithmeticException e) {
+			System.out.println("Exception while calculating the point.");
+			throw e;
 		}
+		
 		return point;
 	}
 
