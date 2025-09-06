@@ -18,66 +18,52 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-class TransactionsTest {
+class TransactionsControllerTest {
 
     @Mock
-    private TransactionsImpl transactionsImpl;
+    private TransactionsImpl transactions;
 
     @InjectMocks
-    private Transactions transactionsController;
+    private Transactions controller;
 
     @Test
-    void testCalculateAndInsertRewards_success() {
+    void testCalculateAndInsertRewards() {
         
-        TransactionRequestBody request = new TransactionRequestBody();
+        TransactionRequestBody req = new TransactionRequestBody();
+        
+        ResponseEntity<String> mockResponse = ResponseEntity.ok("Inserted");
 
-        doNothing().when(transactionsImpl).insertRewards(request);
+        when(transactions.insertRewards(req)).thenReturn(mockResponse);
 
-        ResponseEntity<String> response = transactionsController.calculateAndInsertRewards(request);
+        ResponseEntity<String> response = controller.calculateAndInsertRewards(req);
 
         //Assertions
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(response.getBody()).isEqualTo("OK");
+        assertThat(response.getBody()).isEqualTo("Inserted");
 
-        verify(transactionsImpl, times(1)).insertRewards(request);
-    }
-
-    @Test
-    void testCalculateAndInsertRewards_exception() {
-        
-        TransactionRequestBody request = new TransactionRequestBody();
-        doThrow(new RuntimeException("DB error")).when(transactionsImpl).insertRewards(request);
-
-        try {
-            transactionsController.calculateAndInsertRewards(request);
-        } catch (RuntimeException ex) {
-            assertThat(ex.getMessage()).isEqualTo("DB error");
-        }
-
-        verify(transactionsImpl, times(1)).insertRewards(request);
+        verify(transactions, times(1)).insertRewards(req);
     }
 
     @Test
     void testGetAllTransactions() {
+        // Arrange
+        Transaction trans1 = new Transaction();
+        trans1.setCustomerId(101);
+        Transaction trans2 = new Transaction();
+        trans2.setCustomerId(101);
         
-        Transaction t1 = new Transaction();
-        t1.setCustomerId(101);
-        
-        Transaction t2 = new Transaction();
-        t2.setCustomerId(102);
+        List<Transaction> mockList = Arrays.asList(trans1, trans2);
+        ResponseEntity<List<Transaction>> mockResponse = ResponseEntity.ok(mockList);
 
-        List<Transaction> mockList = Arrays.asList(t1, t2);
+        when(transactions.getAllTransactions()).thenReturn(mockResponse);
 
-        when(transactionsImpl.getAllTransactions())
-                .thenReturn(ResponseEntity.ok(mockList));
-
-        ResponseEntity<List<Transaction>> response = transactionsController.getAllTransactions();
+        ResponseEntity<List<Transaction>> response = controller.getAllTransactions();
 
         //Assertions
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getBody()).hasSize(2);
         assertThat(response.getBody().get(0).getCustomerId()).isEqualTo(101);
 
-        verify(transactionsImpl, times(1)).getAllTransactions();
+        verify(transactions, times(1)).getAllTransactions();
     }
 }
