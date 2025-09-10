@@ -67,6 +67,12 @@
 		    <version>5.2.0</version>
 		    <scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.guicedee.services/slf4j -->
+		<dependency>
+		    <groupId>com.guicedee.services</groupId>
+		    <artifactId>slf4j</artifactId>
+		    <version>1.2.2.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
